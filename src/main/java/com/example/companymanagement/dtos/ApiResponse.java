@@ -16,6 +16,10 @@ public class ApiResponse {
     public ApiResponse(String key,Object value){
         this.data.put(key, value);
     }
+    public ApiResponse addData(String key, Object value) {
+        this.data.put(key, value);
+        return this;
+    }
     public ApiResponse addError(String key,Object value){
         this.error.put(key, value);
         return this;

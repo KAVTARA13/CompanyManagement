@@ -1,7 +1,7 @@
 package com.example.companymanagement.utils;
 
 import com.example.companymanagement.dtos.DepartmentDto;
-import com.example.companymanagement.models.Department;
+import com.example.companymanagement.entities.Department;
 
 import java.util.ArrayList;
 import java.util.List;

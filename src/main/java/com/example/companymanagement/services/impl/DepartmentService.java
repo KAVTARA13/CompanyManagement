@@ -2,20 +2,30 @@ package com.example.companymanagement.services.impl;
 
 import com.example.companymanagement.dtos.ApiResponse;
 import com.example.companymanagement.dtos.DepartmentDto;
-import com.example.companymanagement.models.Department;
+import com.example.companymanagement.entities.Department;
+import com.example.companymanagement.repositories.DepartmentRepository;
 import com.example.companymanagement.services.IDepartmentService;
 import com.example.companymanagement.utils.DepartmentUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DepartmentService implements IDepartmentService {
+
+    private final DepartmentRepository departmentRepository;
     private DepartmentUtils departmentUtils = DepartmentUtils.getInstance();
+
+    @Autowired
+    public DepartmentService(DepartmentRepository departmentRepository) {
+        this.departmentRepository = departmentRepository;
+    }
+
     @Override
     public ApiResponse add(DepartmentDto dto) {
         if (dto == null){
             return new ApiResponse().addError("INCORRECT_PARAM","DEPARTMENT_DTO_IS_NULL");
         }
-        return new ApiResponse("status",this.departmentUtils.addDepartment(new Department(dto)));
+        return new ApiResponse("status",this.departmentRepository.save(new Department(dto)));
     }
 
     @Override
@@ -23,7 +33,11 @@ public class DepartmentService implements IDepartmentService {
         if(id==null || id <= 0){
             return new ApiResponse().addError("id", "incorrect value");
         }
-        return new ApiResponse("department",this.departmentUtils.deleteDepartment(id));
+        Department department = this.departmentRepository.getById(id);
+        System.out.println(department.toString());
+        this.departmentRepository.delete(department);
+        System.out.println(department.toString());
+        return new ApiResponse("department",department);
     }
 
     @Override
